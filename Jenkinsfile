@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/remesnik/react-django-ci-app'
+        git 'https://github.com/remesnik/react-django-ci-app', branch: 'main'
       }
     }
 
