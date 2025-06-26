@@ -50,8 +50,12 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'rsync -a frontend/build/ /var/www/frontend/'
-        sh 'sudo systemctl restart gunicorn'
+        sshagent (credentials: ['your-ssh-credential-id']) {
+          sh 'rsync -avz -e ssh backend/ deploy@${DEPLOY_HOST}:/home/deploy/app/'
+          sh 'ssh deploy@${DEPLOY_HOST} "cd /home/deploy/app && ./venv/bin/pip install -r requirements.txt"'
+          sh 'ssh deploy@${DEPLOY_HOST} "cd /home/deploy/app && ./venv/bin/python manage.py collectstatic --noinput && ./venv/bin/python manage.py migrate"'
+          sh 'ssh deploy@${DEPLOY_HOST} "sudo systemctl restart gunicorn"'
+        }
       }
     }
   }
