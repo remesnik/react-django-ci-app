@@ -26,7 +26,6 @@ pipeline {
       steps {
         dir("${REACT_DIR}") {
           sh 'ls -la'
-          sh 'ls -la frontend'
           sh 'npm install'
         }
       }
