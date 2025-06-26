@@ -6,7 +6,17 @@ pipeline {
     DJANGO_DIR = 'backend'
   }
 
+  options {
+    skipDefaultCheckout true // optional: prevents double checkout
+  }
+
   stages {
+    stage('Clean Workspace') {
+      steps {
+        cleanWs()
+      }
+    }
+
     stage('Checkout') {
       steps {
         git url: 'https://github.com/remesnik/react-django-ci-app', branch: 'main'
