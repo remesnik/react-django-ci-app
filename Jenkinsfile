@@ -4,6 +4,8 @@ pipeline {
   environment {
     REACT_DIR = 'frontend'
     DJANGO_DIR = 'backend'
+    DATABASE_URL = credentials('DATABASE_URL')
+    TEST_DATABASE_URL = credentials('TEST_DATABASE_URL')
   }
 
   options {
