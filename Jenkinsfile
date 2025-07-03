@@ -65,6 +65,16 @@ pipeline {
         sshagent (credentials: ['deploy-key']) {
           sh 'ssh-keyscan -H pkcoaches.com >> ~/.ssh/known_hosts'
           sh 'rsync -avz -e ssh backend/ deploy@${DEPLOY_HOST}:/home/deploy/app/'
+          sh '''
+            ssh deploy@pkcoaches.com << EOF
+              cd /home/deploy/app
+              if [ ! -f venv/bin/pip ]; then
+                python3.12 -m venv venv
+              fi
+              ./venv/bin/pip install --upgrade pip
+              ./venv/bin/pip install -r requirements.txt
+            EOF
+          '''
           sh 'ssh deploy@${DEPLOY_HOST} "cd /home/deploy/app && ./venv/bin/pip install -r requirements.txt"'
           sh 'ssh deploy@${DEPLOY_HOST} "cd /home/deploy/app && ./venv/bin/python manage.py collectstatic --noinput && ./venv/bin/python manage.py migrate"'
           sh 'ssh deploy@${DEPLOY_HOST} "sudo systemctl restart gunicorn"'
