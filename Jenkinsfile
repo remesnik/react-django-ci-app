@@ -62,7 +62,8 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sshagent (credentials: ['your-ssh-credential-id']) {
+        sshagent (credentials: ['deploy-key']) {
+          sh 'ssh-keyscan -H pkcoaches.com >> ~/.ssh/known_hosts'
           sh 'rsync -avz -e ssh backend/ deploy@${DEPLOY_HOST}:/home/deploy/app/'
           sh 'ssh deploy@${DEPLOY_HOST} "cd /home/deploy/app && ./venv/bin/pip install -r requirements.txt"'
           sh 'ssh deploy@${DEPLOY_HOST} "cd /home/deploy/app && ./venv/bin/python manage.py collectstatic --noinput && ./venv/bin/python manage.py migrate"'
