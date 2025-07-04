@@ -66,11 +66,9 @@ pipeline {
           sh 'ssh-keyscan -H pkcoaches.com >> ~/.ssh/known_hosts'
           sh 'rsync -avz --exclude "venv" -e ssh backend/ deploy@${DEPLOY_HOST}:/home/deploy/app/'
           sh '''
-            ssh deploy@pkcoaches.com << EOF
+            ssh deploy@pkcoaches.com << 'EOF'
               cd /home/deploy/app
-              if [ ! -f venv/bin/pip ]; then
-                python3.12 -m venv venv
-              fi
+              python3.12 -m venv venv
               ./venv/bin/pip install --upgrade pip
               ./venv/bin/pip install -r requirements.txt
             EOF
