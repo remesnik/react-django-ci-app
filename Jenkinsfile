@@ -64,7 +64,7 @@ pipeline {
       steps {
         sshagent (credentials: ['deploy-key']) {
           sh 'ssh-keyscan -H pkcoaches.com >> ~/.ssh/known_hosts'
-          sh 'rsync -avz -e ssh backend/ deploy@${DEPLOY_HOST}:/home/deploy/app/'
+          sh 'rsync -avz --exclude "venv" -e ssh backend/ deploy@${DEPLOY_HOST}:/home/deploy/app/'
           sh '''
             ssh deploy@pkcoaches.com << EOF
               cd /home/deploy/app
