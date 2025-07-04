@@ -73,7 +73,7 @@ pipeline {
               ./venv/bin/pip install -r requirements.txt &&
               ./venv/bin/python manage.py collectstatic --noinput &&
               ./venv/bin/python manage.py migrate &&
-              sudo systemctl restart gunicorn
+              sudo /bin/systemctl restart gunicorn
             '
           """
         }
