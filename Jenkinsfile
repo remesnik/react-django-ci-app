@@ -65,10 +65,10 @@ pipeline {
       steps {
         sshagent (credentials: ['deploy-key']) {
           sh 'ssh-keyscan -H pkcoaches.com >> ~/.ssh/known_hosts'
-          sh "rsync -avz --exclude 'venv' -e ssh backend/ deploy@${DEPLOY_HOST}:/home/deploy/app/"  
+          sh "rsync -avz --delete --exclude 'venv' -e ssh backend/ deploy@${DEPLOY_HOST}:/home/deploy/app/"  
           // Sync built React files to backend static directory
           sh """
-            rsync -avz -e ssh frontend/build/ deploy@${DEPLOY_HOST}:${DEPLOY_DIR}/static/
+            rsync -avz --delete -e ssh frontend/build/ deploy@${DEPLOY_HOST}:${DEPLOY_DIR}/static/
           """
           sh """
             ssh deploy@${DEPLOY_HOST} '
