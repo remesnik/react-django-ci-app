@@ -73,6 +73,7 @@ pipeline {
           sh """
             ssh deploy@${DEPLOY_HOST} '
               cd /home/deploy/app &&
+              export DATABASE_URL=${DATABASE_URL}
               python3.12 -m venv venv &&
               ./venv/bin/pip install --upgrade pip &&
               ./venv/bin/pip install -r requirements.txt &&
