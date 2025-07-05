@@ -19,6 +19,6 @@ from django.urls import path, re_path
 from .views import FrontendAppView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     re_path(r"^(?!admin|api).^$", FrontendAppView.as_view())
 ]
