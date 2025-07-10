@@ -61,6 +61,16 @@ pipeline {
       }
     }
 
+    stage('Run Django Tests') {
+      steps {
+        dir("${DJANGO_DIR}") {
+          withEnv(["DATABASE_URL=${TEST_DATABASE_URL}"]) {
+            sh './venv/bin/python manage.py test accounts.tests'
+          }
+        }
+      }
+    }
+
     stage('Deploy') {
       steps {
         sshagent (credentials: ['deploy-key']) {
